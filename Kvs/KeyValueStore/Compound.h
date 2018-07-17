@@ -11,10 +11,12 @@ namespace Kvs::KeyValueStore
 {
 
 /// @brief A key->value store that combines two underlying key->value stores
-/// such that the front-end key->value store maps to the back-end key->value store.
+/// such that the front-end value maps to the back-end key->value store.
+/// @code
 /// In other words: key -> (key -> value)
-///                        |---BackEnd--|  
+///                        |---BackEnd--|
 ///                |-----FrontEnd-------|
+/// @endcode
 template <typename Key, typename Value, typename LockPolicy>
 class Compound : public TypedKeyValueStore<Key, Value>
 {
@@ -22,11 +24,15 @@ public:
 
     /// @brief Convenient rename for a scoped lock
     using ScopedLock = typename Lock::Scoped<LockPolicy>;
-    
+
+    /// @brief Convenient rename for the overall key->value store
     using KeyValueStoreSharedPtr = typename TypedKeyValueStore<Key,Value>::SharedPtr;
+    /// @brief Convenient rename for the front-end key->value store
     using FrontEndKeyValueStoreSharedPtr = typename TypedKeyValueStore<Key,KeyValueStoreSharedPtr>::SharedPtr;
 
+    /// @brief Convenient rename for a factory to construct the front-end key->value store
     using FrontEndKeyValueStoreFactory = std::function<FrontEndKeyValueStoreSharedPtr()>;
+    /// @brief Convenient rename for a factory to construct the back-end key->value store
     using BackEndKeyValueStoreFactory = std::function<KeyValueStoreSharedPtr()>;
 
     /// @brief Constructor
@@ -37,13 +43,13 @@ public:
         , m_backEndKeyValueStoreFactory(backEndKeyValueStoreFactory)
         , m_lock()
     {
-        
+
     }
 
     /// @brief Destructor
     ~Compound()
     {
-        
+
     }
 
     /// @copydoc TypedKeyValueStore::Put()
@@ -61,7 +67,7 @@ public:
         }
         return frontEndValue->Put(key, value);
     }
-    
+
     /// @copydoc TypedKeyValueStore::Get()
     bool Get(const Key& key, Value& value) const
     {
@@ -73,7 +79,7 @@ public:
         }
         return frontEndValue->Get(key, value);
     }
-    
+
     /// @copydoc TypedKeyValueStore::Remove()
     bool Remove(const Key& key)
     {
@@ -99,7 +105,7 @@ public:
         );
         return size;
     }
-    
+
     /// @copydoc TypedKeyValueStore::ForEach()
     void ForEach(const typename TypedKeyValueStore<Key,Value>::FuncObjReadOnly& funcObj) const
     {
@@ -111,7 +117,7 @@ public:
             }
         );
     }
-    
+
     /// @copydoc TypedKeyValueStore::Transform()
     void Transform(const typename TypedKeyValueStore<Key,Value>::FuncObjReadKeyWriteValue& funcObj)
     {

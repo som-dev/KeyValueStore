@@ -1,5 +1,8 @@
-#include "TestSchema.h"
-#include "TestSchemaFactories.h"
+#include "Schema.h"
+#include "Factories.h"
+
+namespace Kvs::Test
+{
 
 template<typename LockType>
 Kvs::IKeyValueStore::SharedPtr Create_Compound_StdUnorderedMap_StdMap()
@@ -8,21 +11,21 @@ Kvs::IKeyValueStore::SharedPtr Create_Compound_StdUnorderedMap_StdMap()
         {
             return std::make_shared<
                 Kvs::KeyValueStore::StdUnorderedMap<
-                    TestSchema::KeyType,
-                    Kvs::TypedKeyValueStore<TestSchema::KeyType, TestSchema::ValueType>::SharedPtr,
-                    Kvs::Hash::FirstByte<TestSchema::KeyType>,
+                    Kvs::Test::Schema::KeyType,
+                    Kvs::TypedKeyValueStore<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType>::SharedPtr,
+                    Kvs::Hash::FirstByte<Kvs::Test::Schema::KeyType>,
                     Kvs::Lock::None>>();
         };
     auto backEndFactory = []
         {
             return std::make_shared<
                 Kvs::KeyValueStore::StdMap<
-                    TestSchema::KeyType,
-                    TestSchema::ValueType,
-                    TestSchema::CompareKeyType,
+                    Kvs::Test::Schema::KeyType,
+                    Kvs::Test::Schema::ValueType,
+                    Kvs::Test::Schema::CompareKeyType,
                     Kvs::Lock::None>>();
         };
-    return std::make_shared<Kvs::KeyValueStore::Compound<TestSchema::KeyType, TestSchema::ValueType, LockType>>(frontEndFactory, backEndFactory);
+    return std::make_shared<Kvs::KeyValueStore::Compound<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, LockType>>(frontEndFactory, backEndFactory);
 }
 
 template<>
@@ -50,22 +53,22 @@ Kvs::IKeyValueStore::SharedPtr Create_Compound_ArrayTable_StdMap()
         {
             return std::make_shared<
                 Kvs::KeyValueStore::ArrayTable<
-                    TestSchema::KeyType,
-                    Kvs::TypedKeyValueStore<TestSchema::KeyType, TestSchema::ValueType>::SharedPtr,
+                    Kvs::Test::Schema::KeyType,
+                    Kvs::TypedKeyValueStore<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType>::SharedPtr,
                     256,
-                    Kvs::Hash::FirstByte<TestSchema::KeyType>,
+                    Kvs::Hash::FirstByte<Kvs::Test::Schema::KeyType>,
                     Kvs::Lock::None>>();
         };
     auto backEndFactory = []
         {
             return std::make_shared<
                 Kvs::KeyValueStore::StdMap<
-                    TestSchema::KeyType,
-                    TestSchema::ValueType,
-                    TestSchema::CompareKeyType,
+                    Kvs::Test::Schema::KeyType,
+                    Kvs::Test::Schema::ValueType,
+                    Kvs::Test::Schema::CompareKeyType,
                     Kvs::Lock::None>>();
         };
-    return std::make_shared<Kvs::KeyValueStore::Compound<TestSchema::KeyType, TestSchema::ValueType, LockType>>(frontEndFactory, backEndFactory);
+    return std::make_shared<Kvs::KeyValueStore::Compound<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, LockType>>(frontEndFactory, backEndFactory);
 }
 
 template<>
@@ -85,3 +88,5 @@ Kvs::IKeyValueStore::SharedPtr Create<Compound_ArrayTable_StdMap_SpinLock>()
 {
     return Create_Compound_ArrayTable_StdMap<Kvs::Lock::Spin>();
 }
+
+} // namespace Kvs::Test

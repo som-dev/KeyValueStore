@@ -1,19 +1,19 @@
 /// @file
-/// @brief Defines and implements the Kvs::KeyValueStore::StdUnorderedMap class
-
+/// @brief Defines and implements the Kvs::KeyValueStore::GnuTree class
 
 #pragma once
 
 #include "../TypedKeyValueStore.h"
 #include "../Lock/Scoped.h"
-#include <unordered_map>
+#include <ext/pb_ds/assoc_container.hpp>
+//#include <ext/pb_ds/tag_and_trait.hpp>
 
 namespace Kvs::KeyValueStore
 {
 
-/// @brief A key->value store using std::unordered_map as the underlying container
-template <typename Key, typename Value, typename Hash, typename LockPolicy>
-class StdUnorderedMap : public TypedKeyValueStore<Key, Value>
+/// @brief A key->value store using gnu tree as the underlying container
+template <typename Key, typename Value, typename Compare, typename LockPolicy>
+class GnuTree : public TypedKeyValueStore<Key, Value>
 {
 public:
 
@@ -21,14 +21,14 @@ public:
     using ScopedLock = typename Lock::Scoped<LockPolicy>;
 
     /// @brief Constructor
-    StdUnorderedMap()
-        : m_map(), m_lock()
+    GnuTree()
+        : m_tree(), m_lock()
     {
 
     }
 
     /// @brief Destructor
-    ~StdUnorderedMap()
+    ~GnuTree()
     {
 
     }
@@ -37,7 +37,7 @@ public:
     bool Put(const Key& key, const Value& value)
     {
         ScopedLock lock(m_lock);
-        m_map[key] = value;
+        m_tree[key] = value;
         return true;
     }
 
@@ -45,8 +45,8 @@ public:
     bool Get(const Key& key, Value& value) const
     {
         ScopedLock lock(m_lock);
-        auto iter = m_map.find(key);
-        if (iter != m_map.end())
+        auto iter = m_tree.find(key);
+        if (iter != m_tree.end())
         {
             value = iter->second;
             return true;
@@ -58,10 +58,10 @@ public:
     bool Remove(const Key& key)
     {
         ScopedLock lock(m_lock);
-        auto iter = m_map.find(key);
-        if (iter != m_map.end())
+        auto iter = m_tree.find(key);
+        if (iter != m_tree.end())
         {
-            m_map.erase(iter);
+            m_tree.erase(iter);
             return true;
         }
         return false;
@@ -71,14 +71,14 @@ public:
     size_t Size() const
     {
         ScopedLock lock(m_lock);
-        return m_map.size();
+        return m_tree.size();
     }
 
     /// @copydoc TypedKeyValueStore::ForEach()
     void ForEach(const typename TypedKeyValueStore<Key,Value>::FuncObjReadOnly& funcObj) const
     {
         ScopedLock lock(m_lock);
-        for (auto iter : m_map)
+        for (auto iter : m_tree)
         {
             funcObj(iter.first, iter.second);
         }
@@ -88,7 +88,7 @@ public:
     void Transform(const typename TypedKeyValueStore<Key,Value>::FuncObjReadKeyWriteValue& funcObj)
     {
         ScopedLock lock(m_lock);
-        for (auto& iter : m_map)
+        for (auto& iter : m_tree)
         {
             funcObj(iter.first, iter.second);
         }
@@ -97,7 +97,7 @@ public:
 protected:
 
     /// @brief The underlying implementation
-    std::unordered_map<Key, Value, Hash> m_map;
+    __gnu_pbds::tree<Key, Value, Compare> m_tree;
 
     /// @brief The locking policy
     LockPolicy m_lock;
