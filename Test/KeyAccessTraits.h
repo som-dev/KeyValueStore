@@ -1,14 +1,20 @@
 /// @file
-/// @brief Defines and implements the SchemaAccessTraits class
+/// @brief Defines and implements the SchemaKeyAccessTraits class
+
+#pragma once
 
 #include "Schema.h"
+#include <algorithm>
 
 namespace Kvs::Test
 {
 
 /// @brief Helper class that defines Element-Access Traits (the methods and
 /// constants needed) for GccTrie to access data in the Schema Key
-struct SchemaAccessTraits
+/// Length is a template parameter for use in Compound Key Value stores
+/// where one might want a partial Trie as the front-end.
+template<size_t Length>
+struct KeyAccessTraits
 {
     /// @brief typedef requirement for E_Access_Traits
     typedef size_t size_type;
@@ -32,7 +38,7 @@ struct SchemaAccessTraits
     ///@brief Returns a const_iterator to the after-last element of r_key
     static const_iterator end(key_const_reference r_key)
     {
-        return r_key.field + strlen(r_key.field);
+        return r_key.field + std::min(Length, strlen(r_key.field));
     }
 
     ///@brief Maps an element to a position in the trie
@@ -41,5 +47,8 @@ struct SchemaAccessTraits
         return e - key_type::MinCharacter;
     }
 };
+
+/// @brief Convenient name for using the full key length
+using FullKeyAccessTraits = KeyAccessTraits<sizeof(Schema::KeyType)>;
 
 } // namespace Kvs::Test

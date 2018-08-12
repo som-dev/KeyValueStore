@@ -26,20 +26,19 @@ public:
     using ScopedLock = typename Lock::Scoped<LockPolicy>;
 
     /// @brief Convenient rename for the overall key->value store
-    using KeyValueStoreSharedPtr = typename TypedKeyValueStore<Key,Value>::SharedPtr;
-    /// @brief Convenient rename for the front-end key->value store
-    using FrontEndKeyValueStoreSharedPtr = typename TypedKeyValueStore<Key,KeyValueStoreSharedPtr>::SharedPtr;
+    using KeyValueStoreSharedPtr = typename TypedKeyValueStore<Key, Value>::SharedPtr;
 
-    /// @brief Convenient rename for a factory to construct the front-end key->value store
-    using FrontEndKeyValueStoreFactory = std::function<FrontEndKeyValueStoreSharedPtr()>;
+    /// @brief Convenient rename for the front-end key->value store
+    using FrontEndKeyValueStoreSharedPtr = typename TypedKeyValueStore<Key, KeyValueStoreSharedPtr>::SharedPtr;
+
     /// @brief Convenient rename for a factory to construct the back-end key->value store
     using BackEndKeyValueStoreFactory = std::function<KeyValueStoreSharedPtr()>;
 
     /// @brief Constructor
     Compound(
-        FrontEndKeyValueStoreFactory frontEndKeyValueStoreFactory,
+        FrontEndKeyValueStoreSharedPtr frontEndKeyValueStore,
         BackEndKeyValueStoreFactory backEndKeyValueStoreFactory)
-        : m_frontEndKeyValueStore(frontEndKeyValueStoreFactory())
+        : m_frontEndKeyValueStore(frontEndKeyValueStore)
         , m_backEndKeyValueStoreFactory(backEndKeyValueStoreFactory)
         , m_lock()
     {

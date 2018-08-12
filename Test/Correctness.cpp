@@ -13,6 +13,9 @@ class CorrectnessFixture : public ::testing::Test,
 {
 public:
     /// @brief Setup each test by constructing the key->value store
+    /// This calls Kvs::Test::Create() which is a generic template in
+    /// Factories.h that in turn calls partial tempalte specialization
+    /// with the LockType as the template variable.
     CorrectnessFixture()
     {
         this->AttachKeyValueStore(Kvs::Test::Create<KeyValueStoreType>());
@@ -20,15 +23,31 @@ public:
 };
 
 // add new Key Value Store implementations using Kvs::Test::Schema here:
+// Note that each "type" below is a template whose construcion is defined in Factories.h
 typedef ::testing::Types<
-    Kvs::KeyValueStore::StdMap<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, Kvs::Test::Schema::CompareKeyType, Kvs::Lock::None>,
-    Kvs::KeyValueStore::StdUnorderedMap<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, Kvs::Hash::Jenkins::OneAtATime<Kvs::Test::Schema::KeyType>, Kvs::Lock::None>,
-    Kvs::KeyValueStore::GnuTrie<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, Kvs::Test::SchemaAccessTraits, Kvs::Lock::None>,
-    Kvs::KeyValueStore::GnuTree<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, Kvs::Test::Schema::CompareKeyType, Kvs::Lock::None>,
-    Kvs::KeyValueStore::GnuCcHashTable<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, Kvs::Hash::Jenkins::OneAtATime<Kvs::Test::Schema::KeyType>, Kvs::Lock::None>,
-    Kvs::KeyValueStore::GnuGpHashTable<Kvs::Test::Schema::KeyType, Kvs::Test::Schema::ValueType, Kvs::Hash::Jenkins::OneAtATime<Kvs::Test::Schema::KeyType>, Kvs::Lock::None>,
-    Kvs::Test::Compound_StdUnorderedMap_StdMap_NoLock,
-    Kvs::Test::Compound_ArrayTable_StdMap_NoLock
+    Kvs::Test::StdMap<Kvs::Lock::None>,
+    Kvs::Test::StdUnorderedMap<Kvs::Lock::None>,
+    Kvs::Test::GnuTrie<Kvs::Lock::None>,
+    Kvs::Test::GnuTree<Kvs::Lock::None>,
+    Kvs::Test::GnuCcHashTable<Kvs::Lock::None>,
+    Kvs::Test::GnuGpHashTable<Kvs::Lock::None>,
+    Kvs::Test::Compound_StdUnorderedMap_StdMap<Kvs::Lock::None>,
+    Kvs::Test::Compound_StdUnorderedMap_StdUnorderedMap<Kvs::Lock::None>,
+    Kvs::Test::Compound_StdUnorderedMap_GnuTree<Kvs::Lock::None>,
+    Kvs::Test::Compound_StdUnorderedMap_GnuTrie<Kvs::Lock::None>,
+    Kvs::Test::Compound_StdUnorderedMap_GnuCcHashTable<Kvs::Lock::None>,
+    Kvs::Test::Compound_StdUnorderedMap_GnuGpHashTable<Kvs::Lock::None>,
+    Kvs::Test::Compound_ArrayTable_StdMap<Kvs::Lock::None>,
+    Kvs::Test::Compound_ArrayTable_GnuTree<Kvs::Lock::None>,
+    Kvs::Test::Compound_ArrayTable_GnuTrie<Kvs::Lock::None>,
+    Kvs::Test::Compound_ArrayTable_GnuCcHashTable<Kvs::Lock::None>,
+    Kvs::Test::Compound_ArrayTable_GnuGpHashTable<Kvs::Lock::None>,
+    Kvs::Test::Compound_GnuTrie_StdMap<Kvs::Lock::None>,
+    Kvs::Test::Compound_GnuTrie_StdUnorderedMap<Kvs::Lock::None>,
+    Kvs::Test::Compound_GnuTrie_GnuTree<Kvs::Lock::None>,
+    Kvs::Test::Compound_GnuTrie_GnuTrie<Kvs::Lock::None>,
+    Kvs::Test::Compound_GnuTrie_GnuCcHashTable<Kvs::Lock::None>,
+    Kvs::Test::Compound_GnuTrie_GnuGpHashTable<Kvs::Lock::None>
 > KeyValueStoreTypes;
 
 TYPED_TEST_CASE(CorrectnessFixture, KeyValueStoreTypes);
