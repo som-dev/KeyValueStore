@@ -6,8 +6,7 @@
 #include "Schema.h"
 #include <algorithm>
 
-namespace Kvs::Test
-{
+namespace Kvs { namespace Test {
 
 /// @brief Helper class that defines Element-Access Traits (the methods and
 /// constants needed) for GccTrie to access data in the Schema Key
@@ -51,4 +50,4 @@ struct KeyAccessTraits
 /// @brief Convenient name for using the full key length
 using FullKeyAccessTraits = KeyAccessTraits<sizeof(Schema::KeyType)>;
 
-} // namespace Kvs::Test
+} } // namespace Kvs::Test

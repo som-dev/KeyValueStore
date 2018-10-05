@@ -3,8 +3,7 @@
 
 #pragma once
 
-namespace Kvs::Hash
-{
+namespace Kvs { namespace Hash {
 
 /// @brief A hash functor wrapping the retrieval of the first byte
 template<typename T>
@@ -18,4 +17,4 @@ struct FirstByte
     }
 };
 
-} // namespace Kvs::Hash
+} } // namespace Kvs::Hash

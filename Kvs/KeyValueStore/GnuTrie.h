@@ -9,8 +9,7 @@
 #include <ext/pb_ds/trie_policy.hpp>
 #include <ext/pb_ds/tag_and_trait.hpp>
 
-namespace Kvs::KeyValueStore
-{
+namespace Kvs { namespace KeyValueStore {
 
 /// @brief A key->value store using gnu trie as the underlying container
 template <typename Key, typename Value, typename ElementAccess, typename LockPolicy>
@@ -105,4 +104,4 @@ protected:
 
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

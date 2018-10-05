@@ -7,8 +7,7 @@
 #include "../Lock/Scoped.h"
 #include <functional>
 
-namespace Kvs::KeyValueStore
-{
+namespace Kvs { namespace KeyValueStore {
 
 /// @brief A key->value store that combines two underlying key->value stores
 /// such that the front-end value maps to the back-end key->value store.
@@ -142,4 +141,4 @@ protected:
 
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

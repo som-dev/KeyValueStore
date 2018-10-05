@@ -3,8 +3,7 @@
 
 #pragma once
 
-namespace Kvs::Hash::Jenkins
-{
+namespace Kvs { namespace Hash { namespace Jenkins {
 
 /// @brief A hash functor wrapping the Jenkins One-at-a-time hash
 template<typename T, size_t length = sizeof(T)>
@@ -29,4 +28,4 @@ struct OneAtATime
     }
 };
 
-} // namespace Kvs::Hash::Jenkins
+} } } // namespace Kvs::Hash::Jenkins

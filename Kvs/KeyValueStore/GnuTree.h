@@ -6,10 +6,8 @@
 #include "../TypedKeyValueStore.h"
 #include "../Lock/Scoped.h"
 #include <ext/pb_ds/assoc_container.hpp>
-//#include <ext/pb_ds/tag_and_trait.hpp>
 
-namespace Kvs::KeyValueStore
-{
+namespace Kvs { namespace KeyValueStore {
 
 /// @brief A key->value store using gnu tree as the underlying container
 template <typename Key, typename Value, typename Compare, typename LockPolicy>
@@ -104,4 +102,4 @@ protected:
 
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

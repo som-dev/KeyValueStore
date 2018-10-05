@@ -7,8 +7,7 @@
 #include "../Lock/Scoped.h"
 #include <ext/pb_ds/assoc_container.hpp>
 
-namespace Kvs::KeyValueStore
-{
+namespace Kvs { namespace KeyValueStore {
 
 /// @brief A key->value store using gnu collision-chaining hash table as the underlying container
 template <typename Key, typename Value, typename Hash, typename LockPolicy>
@@ -97,4 +96,4 @@ protected:
 
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

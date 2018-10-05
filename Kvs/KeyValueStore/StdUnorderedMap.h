@@ -8,8 +8,7 @@
 #include "../Lock/Scoped.h"
 #include <unordered_map>
 
-namespace Kvs::KeyValueStore
-{
+namespace Kvs { namespace KeyValueStore {
 
 /// @brief A key->value store using std::unordered_map as the underlying container
 template <typename Key, typename Value, typename Hash, typename LockPolicy>
@@ -104,4 +103,4 @@ protected:
 
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

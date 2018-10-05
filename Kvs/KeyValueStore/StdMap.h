@@ -7,8 +7,7 @@
 #include "../Lock/Scoped.h"
 #include <map>
 
-namespace Kvs::KeyValueStore
-{
+namespace Kvs { namespace KeyValueStore {
 
 /// @brief A key->value store using std::map as the underlying container
 template <typename Key, typename Value, typename Compare, typename LockPolicy>
@@ -23,13 +22,13 @@ public:
     StdMap()
         : m_map(), m_lock()
     {
-        
+
     }
 
     /// @brief Destructor
     ~StdMap()
     {
-        
+
     }
 
     /// @copydoc TypedKeyValueStore::Put()
@@ -39,7 +38,7 @@ public:
         m_map[key] = value;
         return true;
     }
-    
+
     /// @copydoc TypedKeyValueStore::Get()
     bool Get(const Key& key, Value& value) const
     {
@@ -52,7 +51,7 @@ public:
         }
         return false;
     }
-    
+
     /// @copydoc TypedKeyValueStore::Remove()
     bool Remove(const Key& key)
     {
@@ -72,7 +71,7 @@ public:
         ScopedLock lock(m_lock);
         return m_map.size();
     }
-    
+
     /// @copydoc TypedKeyValueStore::ForEach()
     void ForEach(const typename TypedKeyValueStore<Key,Value>::FuncObjReadOnly& funcObj) const
     {
@@ -82,7 +81,7 @@ public:
             funcObj(iter.first, iter.second);
         }
     }
-    
+
     /// @copydoc TypedKeyValueStore::Transform()
     void Transform(const typename TypedKeyValueStore<Key,Value>::FuncObjReadKeyWriteValue& funcObj)
     {
@@ -103,4 +102,4 @@ protected:
 
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

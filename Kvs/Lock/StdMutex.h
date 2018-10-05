@@ -5,9 +5,8 @@
 
 #include <mutex>
 
-namespace Kvs::Lock
-{
-    
+namespace Kvs { namespace Lock {
+
 /// @brief A lock type that implements locking with std::mutex
 class StdMutex
 {
@@ -21,4 +20,4 @@ protected:
     mutable std::mutex m_lock;
 };
 
-} // namespace Kvs::Lock
+} } // namespace Kvs::Lock

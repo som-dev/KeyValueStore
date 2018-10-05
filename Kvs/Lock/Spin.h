@@ -5,9 +5,8 @@
 
 #include <atomic>
 
-namespace Kvs::Lock
-{
-    
+namespace Kvs { namespace Lock {
+
 /// @brief A lock type that implements spin locking with std::atomic_flag
 class Spin
 {
@@ -30,5 +29,4 @@ protected:
     mutable std::atomic_flag m_lock;
 };
 
-
-} // namespace Kvs::Lock
+} } // namespace Kvs::Lock

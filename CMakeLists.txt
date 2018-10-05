@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 file(GLOB KeyValueStoreTest_SOURCES "Test/*.cpp")
 
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
+endif()
+
 ##############################
 # Google Test
 # Based on instructions in https://github.com/google/googletest/tree/master/googletest#incorporating-into-an-existing-cmake-project
@@ -55,4 +59,3 @@ target_include_directories( KeyValueStoreTest PRIVATE
 target_link_libraries(KeyValueStoreTest gtest_main)
 
 add_test(gtest ${PROJECT_BINARY_DIR}/KeyValueStoreTest)
-

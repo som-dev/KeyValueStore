@@ -8,9 +8,8 @@
 #include <array>
 #include <tuple>
 
-namespace Kvs::KeyValueStore
-{
-    
+namespace Kvs { namespace KeyValueStore {
+
 /// @brief A simple array table to store a value at an index based on a hash of the key.
 /// @warning Not intented to be used as a stand-alone because it does not handle collisions!
 /// Rather, this class is to be used as the front-end of a CompoundKeyValueStore.
@@ -32,7 +31,7 @@ public:
     /// @brief Destructor
     ~ArrayTable()
     {
-        
+
     }
 
     /// @copydoc TypedKeyValueStore::Put()
@@ -50,7 +49,7 @@ public:
         std::get<ValueField>(element) = value;
         return true;
     }
-    
+
     /// @copydoc TypedKeyValueStore::Get()
     bool Get(const Key& key, Value& value) const
     {
@@ -65,7 +64,7 @@ public:
         }
         return false;
     }
-    
+
     /// @copydoc TypedKeyValueStore::Remove()
     bool Remove(const Key& key)
     {
@@ -88,7 +87,7 @@ public:
         ScopedLock lock(m_lock);
         return m_size;
     }
-    
+
     /// @copydoc TypedKeyValueStore::ForEach()
     void ForEach(const typename TypedKeyValueStore<Key,Value>::FuncObjReadOnly& funcObj) const
     {
@@ -102,7 +101,7 @@ public:
             }
         }
     }
-    
+
     /// @copydoc TypedKeyValueStore::Transform()
     void Transform(const typename TypedKeyValueStore<Key,Value>::FuncObjReadKeyWriteValue& funcObj)
     {
@@ -129,8 +128,7 @@ protected:
         KeyField,
         ValueField
     };
-    
-    
+
     /// @brief The underlying implementation array
     std::array<Element, Capacity> m_table;
 
@@ -139,9 +137,9 @@ protected:
 
     /// @brief The hash function to get an index into the array
     Hash m_hash;
-    
+
     /// @brief Actual number of values stored
     size_t m_size;
 };
 
-} // namespace Kvs::KeyValueStore
+} } // namespace Kvs::KeyValueStore

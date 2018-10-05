@@ -5,9 +5,8 @@
 
 #include "None.h"
 
-namespace Kvs::Lock
-{
-   
+namespace Kvs { namespace Lock {
+
 /// @brief General-puropse RAII style lock mechanism
 /// Should acquire lock upon construction and release lock upon destruction
 template<typename LockType>
@@ -41,5 +40,4 @@ public:
     ~Scoped() { }
 };
 
-} // namespace Kvs::Lock
-
+} } // namespace Kvs::Lock

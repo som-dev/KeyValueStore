@@ -3,9 +3,8 @@
 
 #pragma once
 
-namespace Kvs::Lock
-{
-    
+namespace Kvs { namespace Lock {
+
 /// @brief A lock type that implements no locking
 /// Ideally the compiler will optimize out the empty definitions
 class None
@@ -17,4 +16,4 @@ public:
     inline void Unlock() const { }
 };
 
-} // namespace Kvs::Lock
+} } // namespace Kvs::Lock

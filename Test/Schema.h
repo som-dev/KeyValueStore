@@ -7,8 +7,7 @@
 #include <memory>
 #include <string.h>
 
-namespace Kvs::Test
-{
+namespace Kvs { namespace Test {
 
 /// @brief A concrete definition of a Key and Value for use with a key->value store
 class Schema
@@ -71,4 +70,4 @@ public:
     using KeyValueStoreSharedPtr = std::shared_ptr<KeyValueStoreType>;
 };
 
-} // namespace Kvs::Test
+} } // namespace Kvs::Test

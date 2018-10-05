@@ -20,8 +20,7 @@
 #include "Kvs/KeyValueStore/GnuGpHashTable.h"
 #include "KeyAccessTraits.h"
 
-namespace Kvs::Test
-{
+namespace Kvs { namespace Test {
 
 /// (arguably) Simplier-to-read definitions for more complex key->value stores
 /// @{
@@ -327,4 +326,4 @@ Kvs::IKeyValueStore::SharedPtr Create()
     return Factory<KeyValueStore>::Create();
 }
 
-} // namespace Kvs::Test
+} } // namespace Kvs::Test
